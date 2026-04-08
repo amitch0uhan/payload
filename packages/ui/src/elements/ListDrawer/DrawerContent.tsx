@@ -141,21 +141,10 @@ export const ListDrawerContent: React.FC<ListDrawerProps> = ({
     }
   }, [refresh, ListView, selectedOption.value])
 
-  const onCreateNew = useCallback(
-    ({ doc }) => {
-      if (typeof onSelect === 'function') {
-        onSelect({
-          collectionSlug: selectedOption?.value,
-          doc,
-          docID: doc.id,
-        })
-      }
-
-      closeModal(documentDrawerSlug)
-      closeModal(drawerSlug)
-    },
-    [closeModal, documentDrawerSlug, drawerSlug, onSelect, selectedOption.value],
-  )
+  const onCreateNew = useCallback(async () => {
+    await refresh({ slug: selectedOption.value })
+    closeModal(documentDrawerSlug)
+  }, [closeModal, documentDrawerSlug, refresh, selectedOption.value])
 
   const onQueryChange: ListDrawerContextProps['onQueryChange'] = useCallback(
     (query) => {
